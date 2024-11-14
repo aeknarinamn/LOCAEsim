@@ -5,6 +5,7 @@
   import { goto } from '$app/navigation';
 
   const apiUrl = import.meta.env.VITE_API_URL;
+  const userToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2NmQ4NmJiNzg3NDMzM2UzM2ViMzk5NTEiLCJrZXkiOiJhY2MiLCJkZXZpY2VJZCI6ImxvY2FwYXkiLCJhY2Nlc3NDb2RlIjo0NTI3LCJzdWIiOiJjdXN0b21lciIsImlhdCI6MTczMTUyMTcyOH0.PIBuR0GOKqzIkTsuDAbpKV2LMkywPbrRstgK7T7xgvY"
 
   let showPopup = false;
   let showPaymentPopup = false;
@@ -71,7 +72,7 @@
                   'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                token : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2NmQ4NmJiNzg3NDMzM2UzM2ViMzk5NTEiLCJrZXkiOiJhY2MiLCJkZXZpY2VJZCI6ImxvY2FwYXkiLCJhY2Nlc3NDb2RlIjo0NTI3LCJzdWIiOiJjdXN0b21lciIsImlhdCI6MTczMTUyMTcyOH0.PIBuR0GOKqzIkTsuDAbpKV2LMkywPbrRstgK7T7xgvY"
+                token : userToken
               }),
           });
           const datas = await response.json();
@@ -170,12 +171,14 @@
 
   // ฟังก์ชันสร้าง Payment Method
   async function handleSubmit() {
+    console.log(cardNumber)
     const { token, error } = await stripe.createToken(cardNumber);
 
     if (error) {
       console.error('Error creating token:', error.message);
     } else {
       console.log('Token created:', token);
+      console.log(token)
       // ส่ง token.id ไปยัง server เพื่อประมวลผลการชำระเงิน
     }
   }
